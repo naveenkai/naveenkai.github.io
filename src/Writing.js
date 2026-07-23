@@ -17,7 +17,7 @@ function Writing() {
       <section>
         {posts.map((p) => (
           <div className="entry post-preview" key={p.slug}>
-            <p className="post-date">{formatDate(p.date)}</p>
+            {p.date && <p className="post-date">{formatDate(p.date)}</p>}
             <p>
               <Link to={`/writing/${p.slug}`} className="post-title-link">
                 <strong>{p.title}</strong>

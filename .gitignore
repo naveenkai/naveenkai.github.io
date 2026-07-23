@@ -17,9 +17,11 @@
 .env.development.local
 .env.test.local
 .env.production.local
-# Keep .claude/ tracked but ignore local-only settings
-.claude/settings.local.json
-.claude/launch.json
+# Claude / local dev tooling — keep local, don't publish
+.claude/
+CLAUDE.md
+.mcp.json
+.prettierrc
 
 npm-debug.log*
 yarn-debug.log*

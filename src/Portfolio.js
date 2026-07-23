@@ -10,11 +10,18 @@ const formatDate = (iso) => {
   return d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 };
 
+// Smooth-scroll to a section without touching the URL hash (HashRouter owns it).
+const scrollToId = (e, id) => {
+  e.preventDefault();
+  const el = document.getElementById(id);
+  if (el) el.scrollIntoView({ behavior: 'smooth' });
+};
+
 function Portfolio() {
   return (
-    <div className="container">
-      {/* Header */}
-      <header className="header">
+    <div className="layout">
+      {/* Sidebar */}
+      <aside className="sidebar">
         <img
           src={process.env.PUBLIC_URL + '/images/naveenk_dp.jpeg'}
           alt="Naveen K"
@@ -33,13 +40,21 @@ function Portfolio() {
           {L('https://www.linkedin.com/in/naveenkai/', 'LinkedIn')}
           {' | '}
           {L('https://www.youtube.com/@naveenk_ai', 'YouTube')}
-          {' | '}
-          <Link to="/writing">Writing</Link>
         </p>
-      </header>
+        <nav className="section-nav">
+          <a href="#about" onClick={(e) => scrollToId(e, 'about')}>About</a>
+          <a href="#career" onClick={(e) => scrollToId(e, 'career')}>Career</a>
+          <a href="#projects" onClick={(e) => scrollToId(e, 'projects')}>Projects</a>
+          <a href="#research" onClick={(e) => scrollToId(e, 'research')}>Research</a>
+          <a href="#writing" onClick={(e) => scrollToId(e, 'writing')}>Writing</a>
+        </nav>
+      </aside>
 
-      {/* Bio */}
-      <section>
+      {/* Content */}
+      <main className="content">
+      {/* About */}
+      <section id="about">
+        <h2>About</h2>
         <p>
           I'm an AI engineer and researcher based in Bengaluru. I work on voice AI agents, computer vision systems,
           and agentic AI pipelines. I started working on AI because I was confused about life — deep math truths,
@@ -52,30 +67,45 @@ function Portfolio() {
       </section>
 
       {/* Career */}
-      <section>
+      <section id="career">
         <h2>Career</h2>
 
         <div className="entry">
           <p>
             <strong>AI Engineer</strong>, Ekfrazo Technologies, Bengaluru.
-            <span className="year">Apr 2025 –</span>
+            <span className="year">Sep 2025 –</span>
           </p>
-          <p>
-            Voice AI agents with 95% automation at 500–600ms latency. RAG systems auto-resolving 70–80% of manual queries.
-            Multi-model reasoning and debate. Stack: Vapi, Pipecat, LangGraph, CrewAI.
+          <ul>
+            <li>
+              Voice AI agents with 95% automation at 500–600ms latency. RAG systems auto-resolving
+              70–80% of manual queries. Multi-model reasoning and debate.
+            </li>
+            <li>Chat with real-time financial data using plain English.</li>
+            <li>Automated financial contract analysis using Power Automate.</li>
+            <li>
+              Built evals and monitoring systems for the agents; made LLMs/agents transparent by
+              holding their results accountable.
+            </li>
+          </ul>
+          <p className="stack">
+            Stack: Pipecat, LiveKit, LangGraph, LangChain, Exotel, Power Automate, Copilot Studio, GCP.
           </p>
         </div>
 
         <div className="entry">
           <p>
             <strong>AI/ML Engineer</strong>, Indus Vision, Bengaluru.
-            <span className="year">Jun 2024 – Mar 2025</span>
+            <span className="year">Jun 2024 – Aug 2025</span>
           </p>
-          <p>
-            Led POSTURA — a 2D clinical gait analysis system. 85–95% keypoint accuracy, 98% gait phase detection.
-            Perspective correction and step measurement without 3D sensors.
-            {' '}{L('https://youtu.be/_PCpW9ioZr4', 'POSTURA demo')}, {L('https://youtu.be/YnoXQUwImjU', '3 Rockers')}.
-          </p>
+          <ul>
+            <li>
+              Led POSTURA — a 2D clinical gait analysis system. 85–95% keypoint accuracy, 98% gait
+              phase detection. Perspective correction and step measurement without 3D sensors.
+              {' '}{L('https://youtu.be/_PCpW9ioZr4', 'POSTURA demo')}, {L('https://youtu.be/YnoXQUwImjU', '3 Rockers')}.
+            </li>
+            <li>Computer-vision-based visual inspection on the production line.</li>
+            <li>Computer-vision-based human safety systems.</li>
+          </ul>
         </div>
 
         <div className="entry">
@@ -92,36 +122,74 @@ function Portfolio() {
       </section>
 
       {/* Projects */}
-      <section>
+      <section id="projects">
         <h2>Projects</h2>
 
-        <div className="entry">
-          <p>
+        <div className="project">
+          <p className="project-desc">
             <strong>AI Interview Agent</strong> — takes interviews end-to-end with context of resume and JD.
             I made it say umm, hmm, ahh.
             {' '}{L('https://www.instagram.com/p/DIOyU2IBkTJ/', 'V1 demo')}, {L('https://www.instagram.com/p/DJQbRadTFSt/', 'V2 demo')} (V2 hit 5M+ views on Instagram).
           </p>
+          <div className="project-media media-portrait">
+            <video
+              src={process.env.PUBLIC_URL + '/images/interview-agent-v2-demo.mp4'}
+              controls
+              playsInline
+              preload="metadata"
+            />
+          </div>
         </div>
 
-        <div className="entry">
-          <p>
+        <div className="project">
+          <p className="project-desc">
             <strong>Voice Cloning (OpenVoice)</strong> — upload/record your voice, choose style, generate.
             {' '}{L('https://huggingface.co/spaces/naveenk-ai/openvoice_voicecloning_win', 'Try it')}.
           </p>
+          <div className="project-media">
+            <a href={process.env.PUBLIC_URL + '/images/openvoice-voice-cloning.png'} target="_blank" rel="noopener noreferrer">
+              <img
+                src={process.env.PUBLIC_URL + '/images/openvoice-voice-cloning.png'}
+                alt="OpenVoice voice-cloning app — text to speak, style selector, reference audio, voice-similarity slider, and generated audio."
+              />
+            </a>
+          </div>
         </div>
 
-        <div className="entry">
-          <p>
+        <div className="project">
+          <p className="project-desc">
             <strong>AgentML</strong> — fully local AI agent for end-to-end dataset analysis. EDA, feature engineering,
             model training, and multi-model debate. Uses Jupyter kernel for code execution, SQLite for sessions,
             open-source models via Ollama. No API keys, no cloud — runs entirely on your machine.
-            {' '}{L('https://github.com/naveenkai', 'GitHub')}.
+            {' '}{L('https://github.com/naveenkai/agentML', 'GitHub')}.
           </p>
+          <div className="project-media">
+            <div className="media-row">
+              <a href={process.env.PUBLIC_URL + '/images/agentml_img1.png'} target="_blank" rel="noopener noreferrer">
+                <img
+                  src={process.env.PUBLIC_URL + '/images/agentml_img1.png'}
+                  alt="AgentML chat analyzing the Titanic dataset with model reasoning and generated pandas code."
+                />
+              </a>
+              <a href={process.env.PUBLIC_URL + '/images/agentml_img2.png'} target="_blank" rel="noopener noreferrer">
+                <img
+                  src={process.env.PUBLIC_URL + '/images/agentml_img2.png'}
+                  alt="AgentML guided pipeline showing prep, EDA, features, training, and evaluation stages with live code output."
+                />
+              </a>
+            </div>
+            <a href={process.env.PUBLIC_URL + '/images/agentml_architecture.png'} target="_blank" rel="noopener noreferrer">
+              <img
+                src={process.env.PUBLIC_URL + '/images/agentml_architecture.png'}
+                alt="AgentML system architecture: React/Zustand frontend over WebSocket and REST to a FastAPI backend, with a LangGraph agent pipeline, an isolated Jupyter kernel, and SQLite."
+              />
+            </a>
+          </div>
         </div>
       </section>
 
       {/* Research */}
-      <section>
+      <section id="research">
         <h2>Research</h2>
 
         <div className="entry">
@@ -186,13 +254,13 @@ function Portfolio() {
       </section>
 
       {/* Writing */}
-      <section>
+      <section id="writing">
         <h2>Writing</h2>
         {posts.slice(0, 3).map((p) => (
           <div className="entry" key={p.slug}>
             <p>
               <Link to={`/writing/${p.slug}`}><strong>{p.title}</strong></Link>
-              <span className="year">{formatDate(p.date)}</span>
+              {p.date && <span className="year">{formatDate(p.date)}</span>}
             </p>
             {p.blurb && <p>{p.blurb}</p>}
           </div>
@@ -224,6 +292,7 @@ function Portfolio() {
           {L('https://www.youtube.com/@naveenk_ai', 'YouTube')}
         </p>
       </footer>
+      </main>
     </div>
   );
 }

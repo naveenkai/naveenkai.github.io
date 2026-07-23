@@ -5,6 +5,47 @@
   padding: 3rem 1.5rem 2rem;
 }
 
+/* ---- Two-column layout (sidebar + content) ---- */
+.layout {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem 2rem;
+  display: flex;
+  gap: 3.5rem;
+  align-items: flex-start;
+}
+
+.sidebar {
+  flex: 0 0 230px;
+  position: sticky;
+  top: 2.5rem;
+  text-align: center;
+}
+
+.content {
+  flex: 1;
+  min-width: 0;
+  max-width: 680px;
+}
+
+@media (max-width: 780px) {
+  .layout {
+    flex-direction: column;
+    gap: 2rem;
+    padding-top: 2rem;
+  }
+
+  .sidebar {
+    position: static;
+    flex-basis: auto;
+    width: 100%;
+  }
+
+  .content {
+    max-width: none;
+  }
+}
+
 /* ---- Header ---- */
 .header {
   text-align: center;
@@ -19,7 +60,8 @@
   margin-bottom: 1rem;
 }
 
-.header h1 {
+.header h1,
+.sidebar h1 {
   font-size: 1.6rem;
   font-weight: 700;
   margin: 0 0 0.25rem;
@@ -34,6 +76,29 @@
 .links-row {
   margin: 0.25rem 0;
   font-size: 0.95rem;
+}
+
+.section-nav {
+  margin-top: 1.4rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid #eee;
+}
+
+.section-nav a {
+  display: block;
+  padding: 0.3rem 0;
+  color: #333;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.section-nav a:hover {
+  color: #000;
+}
+
+/* leave a little space above a section when jumped to */
+section[id] {
+  scroll-margin-top: 1.5rem;
 }
 
 /* ---- Sections ---- */
@@ -87,6 +152,27 @@ section > ul li {
   margin-left: 0.5rem;
 }
 
+.entry ul {
+  margin: 0.4rem 0 0;
+  padding-left: 1.15rem;
+}
+
+.entry li {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  margin-bottom: 0.3rem;
+}
+
+.entry li:last-child {
+  margin-bottom: 0;
+}
+
+.entry .stack {
+  color: #666;
+  font-size: 0.9rem;
+  margin: 0.55rem 0 0;
+}
+
 /* ---- Video grid ---- */
 .videos {
   display: flex;
@@ -123,6 +209,67 @@ section > ul li {
   width: 100%;
   height: 100%;
   border: 0;
+}
+
+/* ---- Projects (label on top, media showcased below) ---- */
+.project {
+  margin-bottom: 2.25rem;
+}
+
+.project:last-child {
+  margin-bottom: 0;
+}
+
+.project-desc {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+
+.project-media {
+  margin-top: 0.9rem;
+}
+
+.project-media a {
+  display: block;
+  line-height: 0;
+}
+
+.project-media img,
+.project-media video {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  border: 1px solid #e5e5e5;
+}
+
+/* vertical reel — keep it compact and centered so it reads as intentional */
+.media-portrait video {
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+/* two screenshots side by side, diagram spans full width below */
+.media-row {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.media-row a {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.media-row img {
+  width: 100%;
+}
+
+@media (max-width: 560px) {
+  .media-row {
+    flex-direction: column;
+  }
 }
 
 /* ---- Footer ---- */

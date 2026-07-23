@@ -27,7 +27,7 @@ function Post() {
 
       <article className="post">
         <header className="post-header">
-          <p className="post-date">{formatDate(post.date)}</p>
+          {post.date && <p className="post-date">{formatDate(post.date)}</p>}
           <h1 className="post-title">{post.title}</h1>
           {post.subtitle && <p className="post-subtitle">{post.subtitle}</p>}
         </header>
