@@ -246,8 +246,13 @@ section > ul li {
 
 /* vertical reel — keep it compact and centered so it reads as intentional */
 .media-portrait video {
+  width: 100%;
   max-width: 300px;
   margin: 0 auto;
+  /* reserve the portrait box up front so the poster loads without a layout jump */
+  aspect-ratio: 480 / 852;
+  background: #000;
+  object-fit: cover;
 }
 
 /* two screenshots side by side, diagram spans full width below */

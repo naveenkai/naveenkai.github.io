@@ -134,9 +134,12 @@ function Portfolio() {
           <div className="project-media media-portrait">
             <video
               src={process.env.PUBLIC_URL + '/images/interview-agent-v2-demo.mp4'}
+              poster={process.env.PUBLIC_URL + '/images/interview-agent-v2-demo-poster.jpg'}
+              width="480"
+              height="852"
               controls
               playsInline
-              preload="metadata"
+              preload="none"
             />
           </div>
         </div>
