@@ -19,7 +19,7 @@ function Writing() {
           <div className="entry post-preview" key={p.slug}>
             {p.date && <p className="post-date">{formatDate(p.date)}</p>}
             <p>
-              <Link to={`/writing/${p.slug}`} className="post-title-link">
+              <Link to={`/writings/${p.slug}`} className="post-title-link">
                 <strong>{p.title}</strong>
               </Link>
             </p>

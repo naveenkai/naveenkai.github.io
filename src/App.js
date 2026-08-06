@@ -9,8 +9,8 @@ function App() {
     <HashRouter>
       <Routes>
         <Route path="/" element={<Portfolio />} />
-        <Route path="/writing" element={<Writing />} />
-        <Route path="/writing/:slug" element={<Post />} />
+        <Route path="/writings" element={<Writing />} />
+        <Route path="/writings/:slug" element={<Post />} />
       </Routes>
     </HashRouter>
   );

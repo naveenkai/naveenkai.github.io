@@ -13,7 +13,7 @@ function Post() {
   if (!post) {
     return (
       <div className="container">
-        <p className="back-link"><Link to="/writing">← Back to Writing</Link></p>
+        <p className="back-link"><Link to="/writings">← Back to Writing</Link></p>
         <p>Post not found.</p>
       </div>
     );
@@ -23,7 +23,7 @@ function Post() {
 
   return (
     <div className="container">
-      <p className="back-link"><Link to="/writing">← Back to Writing</Link></p>
+      <p className="back-link"><Link to="/writings">← Back to Writing</Link></p>
 
       <article className="post">
         <header className="post-header">
@@ -38,7 +38,7 @@ function Post() {
       </article>
 
       <footer>
-        <p><Link to="/writing">← Back to Writing</Link></p>
+        <p><Link to="/writings">← Back to Writing</Link></p>
       </footer>
     </div>
   );

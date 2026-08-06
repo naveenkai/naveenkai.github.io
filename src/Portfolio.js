@@ -262,14 +262,14 @@ function Portfolio() {
         {posts.slice(0, 3).map((p) => (
           <div className="entry" key={p.slug}>
             <p>
-              <Link to={`/writing/${p.slug}`}><strong>{p.title}</strong></Link>
+              <Link to={`/writings/${p.slug}`}><strong>{p.title}</strong></Link>
               {p.date && <span className="year">{formatDate(p.date)}</span>}
             </p>
             {p.blurb && <p>{p.blurb}</p>}
           </div>
         ))}
         {posts.length > 3 && (
-          <p><Link to="/writing">All writing →</Link></p>
+          <p><Link to="/writings">All writing →</Link></p>
         )}
       </section>
 
