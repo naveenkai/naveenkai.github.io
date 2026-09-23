@@ -2,6 +2,8 @@
 
 ## 1. Prologue: Weights and Biases
 
+![Paul Dirac](figures/paul-dirac-quote.png)
+
 > *Paul Dirac, one of the great physicists of the twentieth century, once wrote that "God is a mathematician of a very high order, and He used very advanced mathematics in constructing the universe." He meant that mathematics isn't just a tool humans use to **describe** the universe. It's woven into the actual structure of reality, at a deep level.*
 
 ---

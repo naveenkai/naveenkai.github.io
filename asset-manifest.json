@@ -1,8 +1,8 @@
 {
   "files": {
-    "main.css": "/static/css/main.343fa782.css",
-    "main.js": "/static/js/main.1e83859a.js",
-    "static/js/523.1aba993b.chunk.js": "/static/js/523.1aba993b.chunk.js",
+    "main.css": "/static/css/main.e3a4637b.css",
+    "main.js": "/static/js/main.dd7db583.js",
+    "static/js/523.6d7c24f2.chunk.js": "/static/js/523.6d7c24f2.chunk.js",
     "static/js/453.38208c36.chunk.js": "/static/js/453.38208c36.chunk.js",
     "static/css/84.856b517e.chunk.css": "/static/css/84.856b517e.chunk.css",
     "static/media/KaTeX_AMS-Regular.ttf": "/static/media/KaTeX_AMS-Regular.853be92419a6c3766b9a.ttf",
@@ -86,7 +86,7 @@
     "static/media/KaTeX_SansSerif-Regular.woff2": "/static/media/KaTeX_SansSerif-Regular.cd5e231e0cc53b2cb2c0.woff2",
     "static/media/physics-of-ai_23_zooming-out.md": "/static/media/physics-of-ai_23_zooming-out.98012f52920634a1366e.md",
     "static/media/KaTeX_Script-Regular.woff2": "/static/media/KaTeX_Script-Regular.c81d1b2a4b75d3eded60.woff2",
-    "static/media/physics-of-ai_01_prologue.md": "/static/media/physics-of-ai_01_prologue.dc672f513699d8188302.md",
+    "static/media/physics-of-ai_01_prologue.md": "/static/media/physics-of-ai_01_prologue.e941a3fb9ef223af4a6d.md",
     "static/media/KaTeX_Caligraphic-Bold.woff": "/static/media/KaTeX_Caligraphic-Bold.d757c535a2e5902f1325.woff",
     "static/media/KaTeX_Caligraphic-Regular.woff": "/static/media/KaTeX_Caligraphic-Regular.db074fa22cf224af93d7.woff",
     "static/media/KaTeX_Size3-Regular.ttf": "/static/media/KaTeX_Size3-Regular.8d6b6822586eea3d3b20.ttf",
@@ -101,14 +101,14 @@
     "static/media/KaTeX_Size3-Regular.woff": "/static/media/KaTeX_Size3-Regular.7947224e8a9914fa332b.woff",
     "static/media/KaTeX_Size3-Regular.woff2": "/static/media/KaTeX_Size3-Regular.e1951519f6f0596f7356.woff2",
     "index.html": "/index.html",
-    "main.343fa782.css.map": "/static/css/main.343fa782.css.map",
-    "main.1e83859a.js.map": "/static/js/main.1e83859a.js.map",
-    "523.1aba993b.chunk.js.map": "/static/js/523.1aba993b.chunk.js.map",
+    "main.e3a4637b.css.map": "/static/css/main.e3a4637b.css.map",
+    "main.dd7db583.js.map": "/static/js/main.dd7db583.js.map",
+    "523.6d7c24f2.chunk.js.map": "/static/js/523.6d7c24f2.chunk.js.map",
     "453.38208c36.chunk.js.map": "/static/js/453.38208c36.chunk.js.map",
     "84.856b517e.chunk.css.map": "/static/css/84.856b517e.chunk.css.map"
   },
   "entrypoints": [
-    "static/css/main.343fa782.css",
-    "static/js/main.1e83859a.js"
+    "static/css/main.e3a4637b.css",
+    "static/js/main.dd7db583.js"
   ]
 }
