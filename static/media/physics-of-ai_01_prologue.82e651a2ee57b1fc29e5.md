@@ -145,7 +145,7 @@ That's it: **weights and biases, the fundamental mathematical model behind AI.**
 
 But notice who chose the numbers 5, 3, 2 and −6: **I did.** For movie night that's easy, since I know my own priorities. Now try something harder. Look at a scribbled handwritten "7". You recognise it instantly, but try writing down the weights: which of its 784 pixels matter, and by how much? You can't. Nobody can write those rules down.
 
-So the rest of this series is about one idea: **instead of choosing the weights and biases ourselves, we let the machine learn them from examples.** Section 2 starts with a single neuron that does exactly that.
+So the rest of this series is about one idea: **instead of choosing the weights and biases ourselves, we let the machine learn them from examples.** Section 2 takes the first step: it shows what a neuron needs before it *can* learn.
 
 ---
 

@@ -8,9 +8,7 @@
 
 ### 2.1 The prologue's neuron, with one change
 
-In the prologue we built a perceptron for **"should I watch this movie tonight?"**: weigh each fact, add a bias, and watch if the total is above zero. Section 2 keeps that neuron and changes one input.
-
-"On my subscription" was a fact that only ever pushed **toward** watching. Real decisions also have facts that push **against**, so swap it for one:
+Same question as the prologue, **"should I watch this movie tonight?"**, and the same machine: watch if $\mathbf{w}\cdot\mathbf{x} + b > 0$. One thing is new. Every prologue input pushed **toward** watching, but real decisions also have facts that push **against**, so "on my subscription" makes way for one:
 
 | fact | input $x_j$ | weight $w_j$ |
 |---|---|---|
@@ -18,20 +16,15 @@ In the prologue we built a perceptron for **"should I watch this movie tonight?"
 | favourite actor? | $x_2 \in \{0,1\}$ | $w_2 = +4$ |
 | work early tomorrow? | $x_3 \in \{0,1\}$ | $w_3 = -5$ (a late movie costs sleep) |
 
-and a bias of $b = -5$ (threshold 5). New input, new hand-picked numbers, same priorities as before: reviews matter most, then the actor. The one new idea is the **negative weight**: a fact that argues for "no".
-
-$$
-\boxed{\;\text{watch} = 1 \;\text{ if }\; \mathbf{w}\cdot\mathbf{x} + b > 0\;}
-\qquad \mathbf{w}\cdot\mathbf{x} = \sum_j w_j x_j
-$$
+with $b = -5$. Reviews still matter most, then the actor. The new idea is the **negative weight**: a fact that argues for "no".
 
 ![A single neuron deciding whether to watch a movie](figures/fig1_neuron.png)
 
 ---
 
-### 2.2 Every possible night, in one multiplication
+### 2.2 All eight nights in one multiplication
 
-Here is the neuron in PyTorch, checked against all 8 possible nights:
+The prologue walked through the possible movies one at a time. A neural network never works that way. It stacks every example into one tensor and decides them all at once:
 
 ```python
 import torch
@@ -62,7 +55,7 @@ watch = (z > 0).int()
 
 Look at the last row. Great reviews and your favourite actor, but you have work early tomorrow, and the evidence comes out to **exactly zero**. The neuron is sitting right on the fence. We'll come back to this night, because it breaks the perceptron.
 
-Also look at `nights @ w`. We didn't loop over the nights. We stacked them into a matrix and ran all eight decisions in **one matrix multiplication**. That habit will matter a lot from here on.
+And notice `nights @ w`: no loop, just all eight decisions in **one matrix multiplication**. That habit will matter a lot from here on.
 
 ---
 

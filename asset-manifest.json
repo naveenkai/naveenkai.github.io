@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/static/css/main.33eb86d4.css",
-    "main.js": "/static/js/main.541631ec.js",
-    "static/js/523.d0adbe72.chunk.js": "/static/js/523.d0adbe72.chunk.js",
+    "main.js": "/static/js/main.ddc0ffdc.js",
+    "static/js/523.e9e8dbdf.chunk.js": "/static/js/523.e9e8dbdf.chunk.js",
     "static/js/453.38208c36.chunk.js": "/static/js/453.38208c36.chunk.js",
     "static/css/84.856b517e.chunk.css": "/static/css/84.856b517e.chunk.css",
     "static/media/KaTeX_AMS-Regular.ttf": "/static/media/KaTeX_AMS-Regular.853be92419a6c3766b9a.ttf",
@@ -78,15 +78,15 @@
     "static/media/physics-of-ai_15_starting-right.md": "/static/media/physics-of-ai_15_starting-right.e48ae78ff16b007f1c68.md",
     "static/media/physics-of-ai_07_uncrumpling-paper.md": "/static/media/physics-of-ai_07_uncrumpling-paper.091f846252e75207fb94.md",
     "static/media/physics-of-ai_19_any-function-at-all.md": "/static/media/physics-of-ai_19_any-function-at-all.519030629e6fb6338eb6.md",
-    "static/media/physics-of-ai_02_one-neuron.md": "/static/media/physics-of-ai_02_one-neuron.1062fcefb79955a94049.md",
     "static/media/physics-of-ai_18_the-recipe.md": "/static/media/physics-of-ai_18_the-recipe.361ebf20412982fa014d.md",
+    "static/media/physics-of-ai_02_one-neuron.md": "/static/media/physics-of-ai_02_one-neuron.a7286cb8a5994e784cdb.md",
     "static/media/KaTeX_Script-Regular.woff": "/static/media/KaTeX_Script-Regular.073b3402d036714b4370.woff",
     "static/media/physics-of-ai_22_looking-through-a-small-window.md": "/static/media/physics-of-ai_22_looking-through-a-small-window.148e2e62470c3698311b.md",
     "static/media/KaTeX_Size4-Regular.ttf": "/static/media/KaTeX_Size4-Regular.4ad7c7e8bb8d10a34bb7.ttf",
     "static/media/KaTeX_SansSerif-Regular.woff2": "/static/media/KaTeX_SansSerif-Regular.cd5e231e0cc53b2cb2c0.woff2",
     "static/media/physics-of-ai_23_zooming-out.md": "/static/media/physics-of-ai_23_zooming-out.98012f52920634a1366e.md",
     "static/media/KaTeX_Script-Regular.woff2": "/static/media/KaTeX_Script-Regular.c81d1b2a4b75d3eded60.woff2",
-    "static/media/physics-of-ai_01_prologue.md": "/static/media/physics-of-ai_01_prologue.34217ff6765947379365.md",
+    "static/media/physics-of-ai_01_prologue.md": "/static/media/physics-of-ai_01_prologue.82e651a2ee57b1fc29e5.md",
     "static/media/KaTeX_Caligraphic-Bold.woff": "/static/media/KaTeX_Caligraphic-Bold.d757c535a2e5902f1325.woff",
     "static/media/KaTeX_Caligraphic-Regular.woff": "/static/media/KaTeX_Caligraphic-Regular.db074fa22cf224af93d7.woff",
     "static/media/KaTeX_Size3-Regular.ttf": "/static/media/KaTeX_Size3-Regular.8d6b6822586eea3d3b20.ttf",
@@ -102,13 +102,13 @@
     "static/media/KaTeX_Size3-Regular.woff2": "/static/media/KaTeX_Size3-Regular.e1951519f6f0596f7356.woff2",
     "index.html": "/index.html",
     "main.33eb86d4.css.map": "/static/css/main.33eb86d4.css.map",
-    "main.541631ec.js.map": "/static/js/main.541631ec.js.map",
-    "523.d0adbe72.chunk.js.map": "/static/js/523.d0adbe72.chunk.js.map",
+    "main.ddc0ffdc.js.map": "/static/js/main.ddc0ffdc.js.map",
+    "523.e9e8dbdf.chunk.js.map": "/static/js/523.e9e8dbdf.chunk.js.map",
     "453.38208c36.chunk.js.map": "/static/js/453.38208c36.chunk.js.map",
     "84.856b517e.chunk.css.map": "/static/css/84.856b517e.chunk.css.map"
   },
   "entrypoints": [
     "static/css/main.33eb86d4.css",
-    "static/js/main.541631ec.js"
+    "static/js/main.ddc0ffdc.js"
   ]
 }
