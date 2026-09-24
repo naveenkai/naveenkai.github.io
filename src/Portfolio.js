@@ -64,6 +64,11 @@ function Portfolio() {
           I can research and engineer AI — ML, deep learning, generative AI, agentic systems,
           and whatever else it takes to make a system intelligent.
         </p>
+        <p>
+          I'm writing <Link to="/physics-of-ai"><strong>The Physics of AI</strong></Link>, a 35-part series on
+          deep learning, from a single neuron to <em>Attention Is All You Need</em>, built in PyTorch.{' '}
+          <Link to="/physics-of-ai">Read it →</Link>
+        </p>
       </section>
 
       {/* Career */}
@@ -259,6 +264,16 @@ function Portfolio() {
       {/* Writing */}
       <section id="writing">
         <h2>Writing</h2>
+        <div className="entry">
+          <p>
+            <Link to="/physics-of-ai"><strong>The Physics of AI</strong></Link>
+            <span className="year">35-part series</span>
+          </p>
+          <p>
+            Deep learning from a single neuron to <em>Attention Is All You Need</em>, built in PyTorch
+            with every claim measured.
+          </p>
+        </div>
         {posts.slice(0, 3).map((p) => (
           <div className="entry" key={p.slug}>
             <p>
