@@ -6,97 +6,61 @@
 
 ---
 
-### 2.1 A decision you make every night
+### 2.1 The prologue's neuron, with one change
 
-It's 8:30 pm at the PG and you're deciding whether to order dinner. You don't think about it much, but your brain is weighing a few facts:
+In the prologue we built a perceptron for **"should I watch this movie tonight?"**: weigh each fact, add a bias, and watch if the total is above zero. Section 2 keeps that neuron and changes one input.
 
-- **Am I hungry?** Yes or no.
-- **Is the PG dinner bad today?** Yes or no.
-- **Is it month-end?** If so, the wallet is thin.
+"On my subscription" was a fact that only ever pushed **toward** watching. Real decisions also have facts that push **against**, so swap it for one:
 
-Some facts count more than others. Hunger pushes hard toward ordering and bad PG food pushes a little. Month-end pushes **against** ordering. Once the total push crosses some line, you open the app.
-
-We can write that down as numbers:
-
-| fact | input $x_j$ | importance $w_j$ |
+| fact | input $x_j$ | weight $w_j$ |
 |---|---|---|
-| hungry? | $x_1 \in \{0,1\}$ | $w_1 = +6$ |
-| PG dinner bad? | $x_2 \in \{0,1\}$ | $w_2 = +4$ |
-| month-end? | $x_3 \in \{0,1\}$ | $w_3 = -5$ |
+| great reviews? | $x_1 \in \{0,1\}$ | $w_1 = +6$ |
+| favourite actor? | $x_2 \in \{0,1\}$ | $w_2 = +4$ |
+| work early tomorrow? | $x_3 \in \{0,1\}$ | $w_3 = -5$ (a late movie costs sleep) |
 
-Then pick a **threshold**, say 5: you order only if the weighted evidence beats it.
-
-$$
-\text{order} =
-\begin{cases}
-1 & \text{if } \; w_1x_1 + w_2x_2 + w_3x_3 > \text{threshold} \\
-0 & \text{otherwise}
-\end{cases}
-$$
-
-That's the whole machine. Frank Rosenblatt called it a **perceptron** in the late 1950s. It's the first gear in everything we build in this series.
-
-![A single neuron deciding whether to order dinner](figures/fig1_neuron.png)
-
-Two things to notice before we go on:
-
-1. **Weights are opinions.** A big positive weight means "this matters a lot, and it pushes toward yes". A negative weight means "this pushes toward no". The model's entire personality lives in these numbers.
-2. **Change the weights and you get a different person.** Someone with $w_3 = -1$ doesn't care much about month-end. Same machine, different numbers, different behaviour.
-
-Keep that second point in mind, because learning will turn out to be nothing more than finding the right numbers.
-
----
-
-### 2.2 Moving the threshold inside: the bias
-
-A threshold on one side and a sum on the other is untidy, so we move the threshold over:
+and a bias of $b = -5$ (threshold 5). New input, new hand-picked numbers, same priorities as before: reviews matter most, then the actor. The one new idea is the **negative weight**: a fact that argues for "no".
 
 $$
-w_1x_1 + w_2x_2 + w_3x_3 - \text{threshold} > 0
-$$
-
-Then we give $-\text{threshold}$ its own name, the **bias** $b$:
-
-$$
-\boxed{\;\text{order} = 1 \;\text{ if }\; \mathbf{w}\cdot\mathbf{x} + b > 0\;}
+\boxed{\;\text{watch} = 1 \;\text{ if }\; \mathbf{w}\cdot\mathbf{x} + b > 0\;}
 \qquad \mathbf{w}\cdot\mathbf{x} = \sum_j w_j x_j
 $$
 
-The notebook way to read $b$ is as **eagerness**, meaning how easily this neuron says yes:
+![A single neuron deciding whether to watch a movie](figures/fig1_neuron.png)
 
-- **Big positive $b$:** an eager neuron that fires on almost no evidence (the friend who's *always* up for ordering).
-- **Big negative $b$:** a stubborn neuron that needs overwhelming evidence (the friend who's saving for a bike).
+---
 
-In our example $b = -5$. Here is the neuron in PyTorch, checked against every possible night:
+### 2.2 Every possible night, in one multiplication
+
+Here is the neuron in PyTorch, checked against all 8 possible nights:
 
 ```python
 import torch
 
-w = torch.tensor([6., 4., -5.])   # hungry, PG-bad, month-end
+w = torch.tensor([6., 4., -5.])   # great reviews, favourite actor, work tomorrow
 b = torch.tensor(-5.)
 
 # all 8 possible nights, one per row
-nights = torch.tensor([[h, p, m] for h in (0., 1.)
-                                  for p in (0., 1.)
-                                  for m in (0., 1.)])
+nights = torch.tensor([[r, a, t] for r in (0., 1.)
+                                  for a in (0., 1.)
+                                  for t in (0., 1.)])
 
 z = nights @ w + b          # weighted evidence for every night at once
-order = (z > 0).int()
+watch = (z > 0).int()
 ```
 
 ```
-[hungry, pg_bad, month_end]   z      decision
+[reviews, actor, work_tmrw]    z      decision
 [0, 0, 0]                    -5      no
 [0, 0, 1]                   -10      no
 [0, 1, 0]                    -1      no
 [0, 1, 1]                    -6      no
-[1, 0, 0]                    +1      ORDER
+[1, 0, 0]                    +1      WATCH
 [1, 0, 1]                    -4      no
-[1, 1, 0]                    +5      ORDER
+[1, 1, 0]                    +5      WATCH
 [1, 1, 1]                    +0      no      ← on the fence
 ```
 
-Look at the last row. You're hungry and the food is bad, but it's month-end, and the evidence comes out to **exactly zero**. The neuron is sitting right on the fence. We'll come back to this night, because it breaks the perceptron.
+Look at the last row. Great reviews and your favourite actor, but you have work early tomorrow, and the evidence comes out to **exactly zero**. The neuron is sitting right on the fence. We'll come back to this night, because it breaks the perceptron.
 
 Also look at `nights @ w`. We didn't loop over the nights. We stacked them into a matrix and ran all eight decisions in **one matrix multiplication**. That habit will matter a lot from here on.
 
@@ -106,7 +70,7 @@ Also look at `nights @ w`. We didn't loop over the nights. We stacked them into 
 
 So far this is arithmetic. Now let's draw it.
 
-Swap the yes/no inputs for continuous ones: **hunger level** $x_1$ from 0 to 10 and **how bad the PG dinner is** $x_2$ from 0 to 10. Every past night becomes a point on a 2D plane, blue if you ordered and orange if you didn't.
+Swap the yes/no inputs for continuous ones: **review score** $x_1$ from 0 to 10 and **how much I like the cast** $x_2$ from 0 to 10. Every past movie night becomes a point on a 2D plane, blue if you watched and orange if you didn't.
 
 The neuron's decision flips exactly where
 
@@ -114,14 +78,14 @@ $$
 w_1x_1 + w_2x_2 + b = 0
 $$
 
-and in 2D that equation is **a straight line**. The neuron splits the plane in two: "order" on one side and "don't" on the other.
+and in 2D that equation is **a straight line**. The neuron splits the plane in two: "watch" on one side and "skip" on the other.
 
 ![The decision boundary rotates with w and slides with b](figures/fig2_decision_boundary.png)
 
 This picture explains what the two parameters actually do:
 
 - **$\mathbf{w}$ sets the direction.** The green arrow is the weight vector. It always points perpendicular to the line, toward the "yes" side. Change $\mathbf{w}$ and the line **rotates**.
-- **$b$ sets the position.** Change $b$ and the line **slides** without turning. A more negative $b$ pushes it away, so you need more hunger or worse food before you order.
+- **$b$ sets the position.** Change $b$ and the line **slides** without turning. A more negative $b$ pushes it away, so you need better reviews or a cast you like more before you watch.
 
 With three inputs the line becomes a plane, and with 784 inputs (the pixels of one MNIST digit) it becomes a *hyperplane*. We can't draw that, but the idea is identical: **one neuron is one flat cut through space.** Hold on to this, because Part I is really a story about what happens when you stack and bend these cuts.
 
@@ -133,7 +97,7 @@ We want the machine to **learn** its weights and not rely on us hand-picking 6, 
 
 > Nudge a weight a little → watch how the output changes → keep the nudges that help.
 
-Now go back to the on-the-fence night $[1, 1, 1]$, where $z = 0$ and the neuron says no. Nudge the hunger weight from **6.00 to 6.01**:
+Now go back to the on-the-fence night $[1, 1, 1]$, where $z = 0$ and the neuron says no. Nudge the reviews weight from **6.00 to 6.01**:
 
 ```python
 def perceptron(x, w, b):
@@ -279,7 +243,7 @@ This equation will keep growing throughout the series. By the end it will look l
 
 ### What we skipped, and what comes next
 
-We quietly assumed something big: that *hunger* and *how bad the food is* **are numbers** at all. For a neuron everything must be a number, including the pixels of a handwritten "7", the words in a sentence and the frames of a video. How do we turn the world into numbers, and why does it matter so much *how* we do it?
+We quietly assumed something big: that *how good the reviews are* and *how much I like the cast* **are numbers** at all. For a neuron everything must be a number, including the pixels of a handwritten "7", the words in a sentence and the frames of a video. How do we turn the world into numbers, and why does it matter so much *how* we do it?
 
 That's **Section 3: The World Is Numbers**.
 

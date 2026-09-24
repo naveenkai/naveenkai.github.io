@@ -44,7 +44,7 @@ That's the **chain rule**. Each factor is **local**: it only involves one small 
 
 ### 11.3 One neuron, by hand
 
-Take the dinner neuron with one night of standardised inputs, $\mathbf{x} = [1.2,\, 0.5]$, weights $\mathbf{w} = [2,\, -3]$, bias $b = 0.5$, and the truth $y = 1$ (you did order).
+Take the movie neuron with one night of standardised inputs, $\mathbf{x} = [1.2,\, 0.5]$, weights $\mathbf{w} = [2,\, -3]$, bias $b = 0.5$, and the truth $y = 1$ (you did watch).
 
 **Forward** (left to right, computing values):
 
@@ -76,7 +76,7 @@ F.binary_cross_entropy_with_logits(w @ x + b, torch.tensor(1.)).backward()
 w.grad, b.grad        # → [-0.2374, -0.0989], -0.1978      ✓ same as by hand
 ```
 
-The gradient reads naturally, too: both slopes are negative, so both weights should *increase*. That pushes $z$ up, $a$ toward 1, and the prediction toward "you'll order", which was the truth.
+The gradient reads naturally, too: both slopes are negative, so both weights should *increase*. That pushes $z$ up, $a$ toward 1, and the prediction toward "you'll watch", which was the truth.
 
 ---
 

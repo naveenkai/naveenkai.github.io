@@ -16,7 +16,7 @@ $$
 
 It has two weaknesses, and we've met both:
 
-1. **One learning rate for every direction.** In Section 9's canyon (PG food rated 0–100), the steep direction forced a small $\eta$ and the gentle direction then crawled: **198 steps** at the best learning rate. (All counts in this section use each optimiser's own best learning rate from a fine search: 198 for plain gradient descent at η = 0.025, as in Section 9. Section 10's 19 momentum steps were at a fixed η = 0.02; tuned, momentum needs 16.)
+1. **One learning rate for every direction.** In Section 9's canyon (cast rated 0–100), the steep direction forced a small $\eta$ and the gentle direction then crawled: **198 steps** at the best learning rate. (All counts in this section use each optimiser's own best learning rate from a fine search: 198 for plain gradient descent at η = 0.025, as in Section 9. Section 10's 19 momentum steps were at a fixed η = 0.02; tuned, momentum needs 16.)
 2. **Noise.** Mini-batch gradients jitter (Section 10), and each step follows that step's jitter.
 
 Everything in this section is a fix for one or both.
@@ -55,10 +55,10 @@ Momentum fixes the zig-zag but still uses one $\eta$ for everything. Here's the 
 
 | | gradient |
 |---|---|
-| hunger weight | −0.99 |
-| PG-food weight | −6.05 |
+| reviews weight | −0.99 |
+| cast weight | −6.05 |
 
-The PG-food gradient is **6× bigger**, purely because its feature was measured on a 0–100 scale (Section 4). Any single $\eta$ is either too big for one weight or too small for the other.
+The cast gradient is **6× bigger**, purely because its feature was measured on a 0–100 scale (Section 4). Any single $\eta$ is either too big for one weight or too small for the other.
 
 **RMSProp**'s idea (Hinton, in a 2012 lecture): keep a running average of each weight's **squared** gradient, and divide each step by its square root, which is the gradient's typical size:
 
@@ -163,7 +163,7 @@ So why is Adam everyone's default? Look at the "best η" column. SGD's best rate
 
 ### 16.6 Changing the learning rate as you go
 
-Section 10.5 showed the problem on the dinner valley: with a constant learning rate, mini-batch noise keeps the weights bouncing around the bottom forever. The fix was to **shrink the steps over time**: big steps early to cover ground, small steps late to settle.
+Section 10.5 showed the problem on the movie valley: with a constant learning rate, mini-batch noise keeps the weights bouncing around the bottom forever. The fix was to **shrink the steps over time**: big steps early to cover ground, small steps late to settle.
 
 The rule for how η changes over training is called a **learning-rate schedule**. Four common ones:
 

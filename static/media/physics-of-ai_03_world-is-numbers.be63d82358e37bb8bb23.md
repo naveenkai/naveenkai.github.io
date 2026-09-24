@@ -2,7 +2,7 @@
 
 ## 3. The World Is Numbers
 
-> *Section 2 ended with one neuron, $\sigma(\mathbf{w}\cdot\mathbf{x} + b)$, and a question we skipped. The neuron multiplies $\mathbf{x}$ by weights, but hunger isn't a number, a bad PG dinner isn't a number, and a handwritten "7" certainly isn't. So before a neuron can think about anything, the world has to become numbers. This section is about how that happens.*
+> *Section 2 ended with one neuron, $\sigma(\mathbf{w}\cdot\mathbf{x} + b)$, and a question we skipped. The neuron multiplies $\mathbf{x}$ by weights, but "great reviews" isn't a number, "my favourite actor" isn't a number, and a handwritten "7" certainly isn't. So before a neuron can think about anything, the world has to become numbers. This section is about how that happens.*
 
 ---
 
@@ -33,11 +33,11 @@ We'll climb the ladder using things we've already built.
 ```python
 import torch
 
-hunger = torch.tensor(7.)
-hunger.ndim, hunger.shape        # → 0, torch.Size([])
+reviews = torch.tensor(7.)
+reviews.ndim, reviews.shape        # → 0, torch.Size([])
 ```
 
-**Rank 1, vector.** A row of numbers along one axis. One night from Section 2 is a vector: `[hungry, pg_bad, month_end]`.
+**Rank 1, vector.** A row of numbers along one axis. One night from Section 2 is a vector: `[reviews, actor, work_tmrw]`.
 
 ```python
 night = torch.tensor([1., 1., 0.])
@@ -194,20 +194,20 @@ That's for *one* minute of *one* video. This is why we work in batches, why real
 
 ### 3.7 How you encode matters: a quiet trap
 
-So far our numbers were **measurements**: brightness, speed, hunger level. Their size means something, since 200 is brighter than 100.
+So far our numbers were **measurements**: brightness, speed, review score. Their size means something, since 200 is brighter than 100.
 
-Now suppose we add a new fact to our dinner neuron: *which area of Bengaluru you're in tonight.* Koramangala, Indiranagar or Yelahanka. The quick option is to number them:
+Now suppose we add a new fact to our movie neuron: *what genre is it?* Comedy, thriller or horror. The quick option is to number them:
 
 ```python
-area = {"Koramangala": 1, "Indiranagar": 2, "Yelahanka": 3}
+genre = {"comedy": 1, "thriller": 2, "horror": 3}
 ```
 
 It looks harmless, but look at what we just told the model:
 
 ![Label encoding invents distances; one-hot doesn't](figures/fig10_encoding.png)
 
-- **An order:** Yelahanka > Indiranagar > Koramangala. Greater in *what*? We invented that.
-- **Distances:** Koramangala is "1 away" from Indiranagar but "2 away" from Yelahanka.
+- **An order:** horror > thriller > comedy. Greater in *what*? We invented that.
+- **Distances:** comedy is "1 away" from thriller but "2 away" from horror.
 
 ```python
 codes = torch.tensor([[1.], [2.], [3.]])
@@ -217,24 +217,24 @@ torch.cdist(codes, codes)
 #  [2, 1, 0]]      ← distances that mean nothing
 ```
 
-A neuron makes this worse. It has **one weight** for the area input, so whatever effect it assigns to Koramangala, it's forced to give Yelahanka **three times** that effect. The encoding has decided the model's opinion before any learning happens.
+A neuron makes this worse. It has **one weight** for the genre input, so whatever effect it assigns to comedy, it's forced to give horror **three times** that effect. The encoding has decided the model's opinion before any learning happens.
 
-**The fix is one-hot encoding.** Give every area its own axis:
+**The fix is one-hot encoding.** Give every genre its own axis:
 
 ```python
 import torch.nn.functional as F
 one_hot = F.one_hot(torch.tensor([0, 1, 2]), num_classes=3).float()
-# Koramangala → [1, 0, 0]
-# Indiranagar → [0, 1, 0]
-# Yelahanka   → [0, 0, 1]
+# comedy   → [1, 0, 0]
+# thriller → [0, 1, 0]
+# horror   → [0, 0, 1]
 
 torch.cdist(one_hot, one_hot)
 # [[0.00, 1.41, 1.41],
 #  [1.41, 0.00, 1.41],
-#  [1.41, 1.41, 0.00]]   ← every area equally different (√2)
+#  [1.41, 1.41, 0.00]]   ← every genre equally different (√2)
 ```
 
-Now each area gets **its own weight**, and the neuron is free to learn that Koramangala pushes you to order while Yelahanka doesn't, with no fake ordering baked in.
+Now each genre gets **its own weight**, and the neuron is free to learn that thrillers push you to watch while horror doesn't, with no fake ordering baked in.
 
 > 📓 **Notebook rule:** *the numbers you choose are a claim about the world.* If two things aren't "more" or "less" than each other, don't encode them as bigger and smaller numbers.
 
@@ -263,12 +263,12 @@ $$
 
 In 3.3 we divided every pixel by 255 and moved on quickly. Here's why that deserves a whole section.
 
-Go back to the dinner neuron and add one more honest input, **monthly income in ₹**, next to **hunger level**:
+Go back to the movie neuron and add one more honest input, **how many people have rated the movie**, next to **review score**:
 
 | input | range |
 |---|---|
-| hunger level | 0 – 10 |
-| monthly income | 0 – 1,00,000 |
+| review score | 0 – 10 |
+| number of ratings | 0 – 1,00,000 |
 
 Both are real measurements, and both are encoded "correctly". Yet one of them is ten thousand times bigger than the other. What does that do to a neuron's line, or to any model that measures distance between points?
 

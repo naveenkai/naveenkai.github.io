@@ -2,7 +2,7 @@
 
 ## 10. SGD: Learning from a Handful at a Time
 
-> *Section 9 gave us gradient descent: feel the slope, step the other way. But every step needed the gradient over **all** the training examples, which is fine for 400 dinner nights and hopeless for 60,000 digits, let alone the billions of words a language model reads. This section is about taking good steps after looking at only a small random handful of examples, and why that's not a compromise but the reason deep learning works at scale.*
+> *Section 9 gave us gradient descent: feel the slope, step the other way. But every step needed the gradient over **all** the training examples, which is fine for 400 movie nights and hopeless for 60,000 digits, let alone the billions of words a language model reads. This section is about taking good steps after looking at only a small random handful of examples, and why that's not a compromise but the reason deep learning works at scale.*
 
 ---
 
@@ -125,7 +125,7 @@ On only 4,000 digits full batch can catch up if you pay about 4× the time. On 6
 
 ### 10.5 What the noise looks like
 
-Back to the dinner valley, where we can see it. Same start and same learning rate, but now each step uses only **4 random nights** out of 400:
+Back to the movie valley, where we can see it. Same start and same learning rate, but now each step uses only **4 random nights** out of 400:
 
 ![Full batch vs noisy mini-batch paths](figures/fig43_noisy_paths.png)
 
@@ -141,7 +141,7 @@ That third panel is why real training runs use a **learning-rate schedule**: sta
 
 ### 10.6 One upgrade: momentum
 
-Section 9's canyon (PG food on a 0–100 scale) had gradient descent zig-zagging across the steep walls while crawling along the gentle floor. SGD's noise adds more zig-zag of its own. One classic fix is **momentum**, and it's the ball-rolling picture from Section 9 made literal.
+Section 9's canyon (cast on a 0–100 scale) had gradient descent zig-zagging across the steep walls while crawling along the gentle floor. SGD's noise adds more zig-zag of its own. One classic fix is **momentum**, and it's the ball-rolling picture from Section 9 made literal.
 
 A real ball doesn't only respond to the slope under it right now. It **keeps its velocity**. Momentum does the same: each step is the current gradient *plus a fraction of the previous step*:
 

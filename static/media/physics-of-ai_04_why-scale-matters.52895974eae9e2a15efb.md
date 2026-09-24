@@ -2,40 +2,40 @@
 
 ## 4. Why Scale Matters
 
-> *Section 3 ended with a small unease. We divided every MNIST pixel by 255 and moved on without asking why. Then we lined up two honest inputs, hunger (0–10) and income (₹15,000–1,00,000), and wondered what happens when one is ten thousand times bigger than the other. This section answers that. The answer turns out to explain why data scientists do half the "boring" preprocessing steps they do.*
+> *Section 3 ended with a small unease. We divided every MNIST pixel by 255 and moved on without asking why. Then we lined up two honest inputs, review score (0–10) and number of ratings (15,000–1,00,000), and wondered what happens when one is ten thousand times bigger than the other. This section answers that. The answer turns out to explain why data scientists do half the "boring" preprocessing steps they do.*
 
 ---
 
 ### 4.1 A new input, an honest mistake
 
-Let's go back to the dinner decision with 600 past nights. Each night now has three measurements:
+Let's go back to the movie decision with 600 past movie nights. Each night now has three measurements:
 
 | input | range | encoded as |
 |---|---|---|
-| hunger level | 0 – 10 | a number ✓ |
-| how bad the PG dinner is | 0 – 10 | a number ✓ |
-| monthly income (₹) | 15,000 – 1,00,000 | a number ✓ |
+| review score | 0 – 10 | a number ✓ |
+| how much I like the cast | 0 – 10 | a number ✓ |
+| number of ratings | 15,000 – 1,00,000 | a number ✓ |
 
-Every rule from Section 3 is followed: these are real measurements, so they stay as numbers, with no fake categories. We'll use **synthetic** data so that we know the truth. Ordering depends mostly on hunger and food, and income matters only a tiny bit:
+Every rule from Section 3 is followed: these are real measurements, so they stay as numbers, with no fake categories. We'll use **synthetic** data so that we know the truth. Watching depends mostly on reviews and cast, and how many people rated it matters only a tiny bit:
 
 ```python
 import torch
 torch.manual_seed(0)
 
 n = 600
-hunger = torch.rand(n) * 10
-pg_bad = torch.rand(n) * 10
-income = 15_000 + torch.rand(n) * 85_000
+reviews   = torch.rand(n) * 10
+cast      = torch.rand(n) * 10
+n_ratings = 15_000 + torch.rand(n) * 85_000
 
-logit   = 0.9*hunger + 0.7*pg_bad - 8 + 0.00002*(income - 57_500)
-ordered = (logit + torch.randn(n) > 0).long()          # a little noise, like real life
+logit   = 0.9*reviews + 0.7*cast - 8 + 0.00002*(n_ratings - 57_500)
+watched = (logit + torch.randn(n) > 0).long()          # a little noise, like real life
 
-X = torch.stack([hunger, pg_bad, income], dim=1)       # shape (600, 3)
+X = torch.stack([reviews, cast, n_ratings], dim=1)     # shape (600, 3)
 X_train, X_test = X[:400], X[400:]
-y_train, y_test = ordered[:400], ordered[400:]
+y_train, y_test = watched[:400], watched[400:]
 ```
 
-About half the nights end in an order (49%), so **a coin flip scores 50%**. Anything useful has to beat that.
+About half the nights end with the movie watched (49%), so **a coin flip scores 50%**. Anything useful has to beat that.
 
 ---
 
@@ -69,28 +69,28 @@ acc(knn_predict(X_train, y_train, X_test), y_test)    # → 0.50
 
 ### 4.3 Who's actually doing the talking?
 
-Take two nights that should feel completely different:
+Take two movies that should feel completely different:
 
-| | hunger | PG bad | income |
+| | reviews | cast | ratings |
 |---|---|---|---|
-| night A | 1 | 2 | ₹40,000 |
-| night B | 9 | 8 | ₹40,600 |
+| movie A | 1 | 2 | 40,000 |
+| movie B | 9 | 8 | 40,600 |
 
-Night A you're barely hungry and the food is fine. Night B you're starving and the food is terrible. Those are opposite decisions. Now look at what goes into the distance:
+Movie A is panned and has a cast you don't care about. Movie B is acclaimed and stars people you love. Those are opposite decisions. Now look at what goes into the distance:
 
 $$
 d^2 = \underbrace{(1-9)^2}_{64} + \underbrace{(2-8)^2}_{36} + \underbrace{(40{,}000 - 40{,}600)^2}_{\mathbf{360{,}000}}
 $$
 
-A trivial ₹600 difference in income outweighs everything else by a factor of 3,600.
+A trivial difference of 600 ratings outweighs everything else by a factor of 3,600.
 
 ![Share of distance by feature, raw vs standardised](figures/fig11_distance_share.png)
 
-**Distance doesn't know about units.** It doesn't know that "8 points of hunger" is a huge difference and "₹600" is nothing. It only sees the raw size of the numbers, and income's numbers are huge. So KNN's "nearest nights" are really just **nights with similar income**:
+**Distance doesn't know about units.** It doesn't know that "8 points of review score" is a huge difference and "600 more ratings" is nothing. It only sees the raw size of the numbers, and the rating counts are huge. So KNN's "nearest nights" are really just **movies with a similar number of ratings**:
 
 ![The 7 nearest neighbours, raw vs standardised](figures/fig12_neighbours.png)
 
-On the left, the 7 "nearest" nights to tonight (★) are scattered across the hunger–food plane. Their incomes are what's close: all within a few hundred rupees of ₹50,000. Two of them are barely-hungry, good-food nights that tell us nothing about tonight. This particular query got lucky with 5 of 7 correct. Across the whole test set, luck averages out to a coin flip.
+On the left, the 7 "nearest" nights to tonight (★) are scattered across the reviews–cast plane. Their rating counts are what's close: all within a few hundred of 50,000. Two of them are poorly reviewed movies with a cast you don't care for, which tell us nothing about tonight. This particular query got lucky with 5 of 7 correct. Across the whole test set, luck averages out to a coin flip.
 
 > 📓 **Notebook rule:** *a feature's influence on distance is proportional to its numeric spread, not its importance.* Whatever has the biggest numbers gets the loudest voice.
 
@@ -104,7 +104,7 @@ $$
 \tilde{x}_j = \frac{x_j - \mu_j}{\sigma_j}
 $$
 
-After this, "hunger = +1" means *one typical spread above average hunger*, and "income = +1" means *one typical spread above average income*. The two are finally comparable.
+After this, "reviews = +1" means *one typical spread above the average review score*, and "ratings = +1" means *one typical spread above the average number of ratings*. The two are finally comparable.
 
 ```python
 mean, std = X_train.mean(0), X_train.std(0)
@@ -116,7 +116,7 @@ Xte_s = (X_test  - mean) / std          # ← test uses TRAIN statistics
 acc(knn_predict(Xtr_s, y_train, Xte_s), y_test)     # → 0.875
 ```
 
-**From 50% to 87.5% with one line**, the same model on the same data. Only the ruler changed. Look back at the right half of the distance-share figure: hunger and food now make up nearly all of the distance, and that ₹600 contributes 0.005%.
+**From 50% to 87.5% with one line**, the same model on the same data. Only the ruler changed. Look back at the right half of the distance-share figure: reviews and cast now make up nearly all of the distance, and those 600 ratings contribute 0.005%.
 
 It isn't a lucky choice of $k$ either:
 
@@ -136,13 +136,13 @@ It also scores **87.5%** here. That's what `images / 255` from Section 3 was doi
 
 ### 4.5 Equal voice ≠ equal importance
 
-Here's an experiment that should bother you. **Drop income entirely**:
+Here's an experiment that should bother you. **Drop the number of ratings entirely**:
 
 ```python
 acc(knn_predict(X_train[:, :2], y_train, X_test[:, :2]), y_test)   # → 0.905
 ```
 
-Two features beat three. Standardisation gave income an **equal voice**, but income barely matters to the decision, so it now adds a little noise to every distance.
+Two features beat three. Standardisation gave the rating count an **equal voice**, but it barely matters to the decision, so it now adds a little noise to every distance.
 
 Scaling solves one problem: *no feature is loud just because of its units.* It can't tell you *which features deserve a voice at all*. For that you have to look at the data. Hold that thought until 4.8.
 
@@ -152,7 +152,7 @@ Scaling solves one problem: *no feature is loud just because of its units.* It c
 
 KNN has no weights, so you might hope a neuron could "learn around" a big feature by giving it a small weight. Sometimes it can, *eventually*. But look at what happens on the very first step.
 
-A fresh `nn.Linear` starts with small random weights, roughly between −0.6 and +0.6 here. Multiply one of those by an income of ₹57,000 and you get a $z$ in the thousands:
+A fresh `nn.Linear` starts with small random weights, roughly between −0.6 and +0.6 here. Multiply one of those by a rating count of 57,000 and you get a $z$ in the thousands:
 
 ```python
 import torch.nn as nn
@@ -176,11 +176,11 @@ A gradient of **exactly zero** means the neuron can't learn at all. Here's why, 
 
 ![Sigmoid saturation: raw vs standardised z](figures/fig14_saturation.png)
 
-Remember Section 2's "sharpness" figure, where scaling $z$ up turned the sigmoid back into a step? Raw income did exactly that. Every night lands far out on a flat part of the curve, where the slope is zero. **No slope, no learning**, the same lesson as Section 2 arriving from a different direction.
+Remember Section 2's "sharpness" figure, where scaling $z$ up turned the sigmoid back into a step? The raw rating count did exactly that. Every night lands far out on a flat part of the curve, where the slope is zero. **No slope, no learning**, the same lesson as Section 2 arriving from a different direction.
 
 With standardised inputs, $z$ lands on the slope, where small weight changes produce small, useful output changes. That's where learning happens.
 
-(There's a second, subtler problem. Even when the neuron isn't saturated, the gradient for each weight is proportional to its input, so income's weight would get pushed thousands of times harder than hunger's. That makes gradient descent zig-zag. We'll see it properly when we draw loss landscapes in Section 9.)
+(There's a second, subtler problem. Even when the neuron isn't saturated, the gradient for each weight is proportional to its input, so the rating count's weight would get pushed thousands of times harder than the reviews weight. That makes gradient descent zig-zag. We'll see it properly when we draw loss landscapes in Section 9.)
 
 ---
 
@@ -194,7 +194,7 @@ acc(knn_predict(train_px,       ...), ...)     # → 0.935
 acc(knn_predict(train_px / 255, ...), ...)     # → 0.935   identical
 ```
 
-So `/255` was never for KNN. **It's for the neuron.** A digit has around 150 inked pixels at values up to 255. Dot those with random weights and $z$ lands deep in the flat zone of the sigmoid, exactly like income did. After `/255`, the pixels sit in $[0, 1]$ and $z$ stays near the slope.
+So `/255` was never for KNN. **It's for the neuron.** A digit has around 150 inked pixels at values up to 255. Dot those with random weights and $z$ lands deep in the flat zone of the sigmoid, exactly like the rating count did. After `/255`, the pixels sit in $[0, 1]$ and $z$ stays near the slope.
 
 > 📓 **Notebook rule:** *different scales across features → distance-based models break. Big scale overall → neurons saturate. Scaling fixes both.*
 
@@ -208,12 +208,12 @@ We just derived every item from the maths:
 
 | the maths forced us to ask… | so in EDA you… | we saw it in |
 |---|---|---|
-| Are features on wildly different scales? | look at `min`, `max`, `mean`, `std` per column | 4.3: income drowned out hunger |
+| Are features on wildly different scales? | look at `min`, `max`, `mean`, `std` per column | 4.3: rating count drowned out reviews |
 | Which ruler: z-score or min-max? | look at the **distribution** and **outliers** | below |
-| Is this number secretly a category? | check what each column *means* | 3.7: areas as 1, 2, 3 |
-| Does this feature deserve a voice? | check how it relates to the target | 4.5: income was mostly noise |
+| Is this number secretly a category? | check what each column *means* | 3.7: genres as 1, 2, 3 |
+| Does this feature deserve a voice? | check how it relates to the target | 4.5: rating count was mostly noise |
 
-**The outlier case, to make it concrete.** Suppose one resident at the PG earns ₹10,00,000 a month. Min-max divides everyone by that one person's range, so everyone else's income gets squeezed into $[0, 0.09]$, and the feature is flattened to almost nothing. The z-score is shifted too (the mean and std move), but it's less fragile. You only notice this if you **look at the column first**, which is what EDA is.
+**The outlier case, to make it concrete.** Suppose one blockbuster in the data has 10,00,000 ratings. Min-max divides every movie by that one movie's range, so everyone else's rating count gets squeezed into $[0, 0.09]$, and the feature is flattened to almost nothing. The z-score is shifted too (the mean and std move), but it's less fragile. You only notice this if you **look at the column first**, which is what EDA is.
 
 > 📓 **Notebook rule:** *EDA isn't a checklist. It's the set of questions the maths forces you to ask before you trust a distance or a gradient.*
 

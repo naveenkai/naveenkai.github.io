@@ -16,13 +16,13 @@ So you do the obvious thing:
 2. Take a small step that way.
 3. Repeat.
 
-That's the entire algorithm. It's called **gradient descent**, and every network in this series, from the dinner neuron to the Transformer at the end, is trained by some version of it. The rest of this section just makes "feel the slope" and "small step" precise.
+That's the entire algorithm. It's called **gradient descent**, and every network in this series, from the movie neuron to the Transformer at the end, is trained by some version of it. The rest of this section just makes "feel the slope" and "small step" precise.
 
 ---
 
 ### 9.2 The slope in one direction: the derivative
 
-Start with one weight. Hold the PG-food weight fixed and look at how the loss changes as we slide the hunger weight $w_1$. That's the 1-D slice of the valley we drew in Section 8:
+Start with one weight. Hold the cast weight fixed and look at how the loss changes as we slide the reviews weight $w_1$. That's the 1-D slice of the valley we drew in Section 8:
 
 ![The slope at a point and the step it suggests](figures/fig36_slope_step.png)
 
@@ -52,7 +52,7 @@ eps = 1e-3                                # nudge each weight ±0.001 and compar
 # numeric slope for w2:  0.12071            ← same, to 4 decimal places
 ```
 
-(For these pictures the dinner neuron has just two weights, hunger and PG food, and no bias. Our inputs are standardised, so the best bias is ≈ −0.01 and dropping it changes nothing visible.)
+(For these pictures the movie neuron has just two weights, reviews and cast, and no bias. Our inputs are standardised, so the best bias is ≈ −0.01 and dropping it changes nothing visible.)
 
 ---
 
@@ -157,11 +157,11 @@ Don't read too much into the number 10. What matters is $\eta$ *relative to how 
 
 In Section 4.6 we said unscaled inputs also make gradient descent **zig-zag**, and promised to show it. Here it is.
 
-Same dinner data, same information, but PG food is now rated **0–100** instead of 0–10. Nothing about *which nights you ordered* has changed. Only the ruler has. Here's the valley in these units, next to the standardised one:
+Same movie data, same information, but the cast is now rated **0–100** instead of 0–10. Nothing about *which movies you watched* has changed. Only the ruler has. Here's the valley in these units, next to the standardised one:
 
 ![Unscaled canyon vs standardised bowl](figures/fig40_zigzag.png)
 
-**The unscaled valley is a long, narrow canyon.** A tiny change to the PG-food weight is multiplied by numbers up to 100, so the walls across the canyon are **very steep**. The hunger weight only sees numbers up to 10, so the floor along the canyon is **very gentle**.
+**The unscaled valley is a long, narrow canyon.** A tiny change to the cast weight is multiplied by numbers up to 100, so the walls across the canyon are **very steep**. The reviews weight only sees numbers up to 10, so the floor along the canyon is **very gentle**.
 
 That puts gradient descent in an impossible spot:
 
@@ -172,7 +172,7 @@ Measured, steps to get within 0.01 of the best loss:
 
 | inputs | best learning rate I could find | steps |
 |---|---|---|
-| PG food on a 0–100 scale | 0.025 (0.05 already bounces and never settles) | **198** |
+| cast on a 0–100 scale | 0.025 (0.05 already bounces and never settles) | **198** |
 | standardised (Section 4) | 5 | **12** |
 | standardised | 10 | **2** |
 
@@ -186,7 +186,7 @@ So that's the full answer to Section 4: scaling your inputs isn't only about fai
 
 ### 9.7 An honest caveat: real valleys aren't bowls
 
-Our dinner neuron's valley is a single smooth bowl: one bottom, and every downhill path leads to it. A deep network's landscape isn't like that. It has flat plateaus, long ridges, saddle points (downhill in some directions, uphill in others) and many different low regions.
+Our movie neuron's valley is a single smooth bowl: one bottom, and every downhill path leads to it. A deep network's landscape isn't like that. It has flat plateaus, long ridges, saddle points (downhill in some directions, uphill in others) and many different low regions.
 
 Surprisingly, gradient descent still works very well on these landscapes in practice, and *why* is still an active research question. For now, keep the simple picture (feel the slope, step the other way) and know it's a simplification. We'll return to the messier truth in Part III.
 
@@ -213,7 +213,7 @@ $$
 
 ### What comes next
 
-There's a problem we skipped. Every step in this section computed the loss, and its gradient, over **all** the training examples. That's fine for 400 dinner nights. For 60,000 MNIST digits it means reading the whole dataset just to take **one** step, and training needs thousands of steps.
+There's a problem we skipped. Every step in this section computed the loss, and its gradient, over **all** the training examples. That's fine for 400 movie nights. For 60,000 MNIST digits it means reading the whole dataset just to take **one** step, and training needs thousands of steps.
 
 **Section 10: SGD** is about getting a *good enough* gradient from a small random handful of examples: mini-batches, why the randomness actually helps, and what "epoch" and "batch size" really mean. That will finally explain the `for i in torch.randperm(4000).split(64)` line hiding in Section 7's training loop.
 

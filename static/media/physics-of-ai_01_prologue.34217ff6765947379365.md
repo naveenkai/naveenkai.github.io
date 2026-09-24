@@ -168,7 +168,7 @@ $$
 
 ### What comes next
 
-**Section 2: One Neuron** gives the perceptron a smoother decision (the sigmoid instead of a hard yes/no), puts it in charge of a new question (whether to order dinner at the PG tonight), and trains its weights and bias from 600 nights of data instead of setting them by hand. That's the first step from *writing* rules to *learning* them.
+**Section 2: One Neuron** gives the perceptron a smoother decision (the sigmoid instead of a hard yes/no), keeps the same movie-night question (with one new input that pushes *against* watching: work early tomorrow), and shows why the smooth version is what makes learning possible. A few sections later, the weights are learned from 600 past movie nights instead of being set by hand. That's the first step from *writing* rules to *learning* them.
 
 ---
 

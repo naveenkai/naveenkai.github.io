@@ -8,11 +8,11 @@
 
 ### 8.1 Why not just use accuracy?
 
-Accuracy is the number we actually care about, so it seems like the obvious scoreboard. Let's test it with the two-input dinner neuron from Section 4 (hunger and PG food, standardised).
+Accuracy is the number we actually care about, so it seems like the obvious scoreboard. Let's test it with the two-input movie neuron from Section 4 (reviews and cast, standardised).
 
-Take a hunger weight that isn't the best yet, $w_1 = 2$, and nudge it:
+Take a reviews weight that isn't the best yet, $w_1 = 2$, and nudge it:
 
-| hunger weight $w_1$ | accuracy | cross-entropy loss (defined below) |
+| reviews weight $w_1$ | accuracy | cross-entropy loss (defined below) |
 |---|---|---|
 | 2.00 | 83.75% | 0.3744 |
 | 2.01 | 83.75% | 0.3728 |
@@ -47,7 +47,7 @@ $$
 
 It's smooth, it's zero when you're perfect, and it grows as you get worse. It passes tests 1 and 2.
 
-Test 3 is where it fails. Suppose tonight you **didn't** order ($y = 0$) and the neuron said:
+Test 3 is where it fails. Suppose tonight you **didn't** watch ($y = 0$) and the neuron said:
 
 | neuron's output $a$ | how wrong is that? | squared error ½(a−0)² |
 |---|---|---|
@@ -70,7 +70,7 @@ $$
 
 There's our old enemy, the sigmoid's slope. When the neuron is confidently wrong, $z$ is far out on the flat part of the S-curve, $\sigma'(z) \approx 0$, and **the gradient vanishes exactly when the mistake is worst.**
 
-Here's that as an experiment. One neuron, one input, the target is 0 ("didn't order"), trained step by step from two different starting points:
+Here's that as an experiment. One neuron, one input, the target is 0 ("didn't watch"), trained step by step from two different starting points:
 
 ```python
 def run(loss_name, w0, b0, steps=300, lr=0.15):
@@ -204,14 +204,14 @@ Given the raw score, PyTorch can rearrange the maths so it never computes $\log(
 
 One last change of view that sets up everything next.
 
-For fixed data, the loss depends **only on the weights**. So for the two-weight dinner neuron we can compute the loss at every possible $(w_1, w_2)$ and draw it as a map:
+For fixed data, the loss depends **only on the weights**. So for the two-weight movie neuron we can compute the loss at every possible $(w_1, w_2)$ and draw it as a map:
 
 ![Accuracy vs loss over the weight plane](figures/fig35_landscape.png)
 
 - **Left, accuracy.** It only depends on the *direction* of $\mathbf{w}$ (the angle of the decision line), so it fans out from the origin in wedges. Walk outward along any ray and it doesn't change at all. There's no slope to follow.
 - **Right, cross-entropy.** A smooth **valley** with a single lowest point (★). From *anywhere* on this map, "which way is downhill?" has an answer.
 
-**Training is finding the bottom of this valley.** Our dinner neuron has 3 weights, so its valley lives in 3-D. The Section 7 MNIST network has about 220,000 weights, so its valley lives in 220,000 dimensions. We can't draw that, but the question at every step is the same one we can see here: *which way is down?*
+**Training is finding the bottom of this valley.** Our movie neuron has 3 weights, so its valley lives in 3-D. The Section 7 MNIST network has about 220,000 weights, so its valley lives in 220,000 dimensions. We can't draw that, but the question at every step is the same one we can see here: *which way is down?*
 
 ---
 
@@ -239,7 +239,7 @@ $$
 
 We have a landscape and we want its lowest point. With 220,000 dimensions we can't look at the whole map. All we can feel is the ground under our feet: *which way slopes down, right here?*
 
-**Section 9: Rolling Downhill** is gradient descent. We'll build it from the derivative up, watch it walk down the dinner valley step by step, and break it on purpose with learning rates that are too small, too big and just right.
+**Section 9: Rolling Downhill** is gradient descent. We'll build it from the derivative up, watch it walk down the movie valley step by step, and break it on purpose with learning rates that are too small, too big and just right.
 
 ---
 

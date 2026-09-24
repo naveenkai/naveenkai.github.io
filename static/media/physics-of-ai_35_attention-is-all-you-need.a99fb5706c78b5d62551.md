@@ -2,7 +2,7 @@
 
 ## 35. Attention Is All You Need
 
-> *In 2017, eight researchers at Google published a paper whose title was also its argument: you don't need recurrence, and you don't need convolution. Attention, stacked with the residual blocks we built in Part III, is enough. This last section assembles their full model, the **encoder–decoder Transformer**, from the pieces of Sections 31–34. We give it the task that defeated every recurrent model in Section 30, then take it back to IMDB to face the baseline that has stood since Section 26. Then we look back at the whole road, from one neuron deciding whether to cook dinner to this.*
+> *In 2017, eight researchers at Google published a paper whose title was also its argument: you don't need recurrence, and you don't need convolution. Attention, stacked with the residual blocks we built in Part III, is enough. This last section assembles their full model, the **encoder–decoder Transformer**, from the pieces of Sections 31–34. We give it the task that defeated every recurrent model in Section 30, then take it back to IMDB to face the baseline that has stood since Section 26. Then we look back at the whole road, from one neuron deciding whether to watch a movie to this.*
 
 ---
 
@@ -113,10 +113,10 @@ It separates "good" from "not good" more sharply than anything before it (95.8% 
 
 ### 35.4 Looking back: one equation, evolving
 
-The series started in Section 2 with a single neuron deciding whether to cook dinner:
+The series started with a single neuron deciding whether to watch a movie (the prologue and Section 2), and it ends by reading 50,000 movie reviews:
 
 $$
-z = w_1\,\text{hunger} + w_2\,\text{PG dinner bad} + w_3\,\text{month-end} + b
+z = w_1\,\text{great reviews} + w_2\,\text{favourite actor} + w_3\,\text{work tomorrow} + b
 $$
 
 Every section after that changed this equation a little.
