@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Portfolio from './Portfolio';
 import Writing from './Writing';
 import Post from './Post';
+import Gallery from './Gallery';
 import './App.css';
 
 // Lazy so the markdown + KaTeX bundle only loads on /physics-of-ai pages
@@ -16,6 +17,7 @@ function App() {
           <Route path="/" element={<Portfolio />} />
           <Route path="/writings" element={<Writing />} />
           <Route path="/writings/:slug" element={<Post />} />
+          <Route path="/gallery" element={<Gallery />} />
           <Route path="/physics-of-ai" element={<PhysicsOfAI />} />
           <Route path="/physics-of-ai/:slug" element={<PhysicsOfAI />} />
         </Routes>
