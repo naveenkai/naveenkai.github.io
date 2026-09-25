@@ -65,9 +65,8 @@ function Portfolio() {
           and whatever else it takes to make a system intelligent.
         </p>
         <p>
-          I'm writing <Link to="/physics-of-ai"><strong>The Physics of AI</strong></Link>, a 35-part series on
-          deep learning, from a single neuron to <em>Attention Is All You Need</em>, built in PyTorch.{' '}
-          <Link to="/physics-of-ai">Read it →</Link>
+          Wrote Single Neuron to Transformer using PyTorch. Read here:{' '}
+          <Link to="/physics-of-ai">naveenk.in/physics-of-ai</Link>
         </p>
       </section>
 
@@ -295,6 +294,9 @@ function Portfolio() {
           <li>
             Interviewed 13 founders and researchers.
             {' '}{L('https://www.youtube.com/watch?v=2u8S3zcrhxA', 'My conversation with Robert Scoble')}.
+          </li>
+          <li>
+            I occasionally take photos :) <Link to="/gallery">A few of them here</Link>.
           </li>
         </ul>
       </section>
