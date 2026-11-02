@@ -85,14 +85,14 @@ function Portfolio() {
               70–80% of manual queries. Multi-model reasoning and debate.
             </li>
             <li>Chat with real-time financial data using plain English.</li>
-            <li>Automated financial contract analysis using Power Automate.</li>
+            <li>Automated financial contract analysis.</li>
             <li>
               Built evals and monitoring systems for the agents; made LLMs/agents transparent by
               holding their results accountable.
             </li>
           </ul>
           <p className="stack">
-            Stack: Pipecat, LiveKit, LangGraph, LangChain, Exotel, Power Automate, Copilot Studio, GCP.
+            Stack: Pipecat, LiveKit, LangGraph, LangChain, Exotel, GCP.
           </p>
         </div>
 
